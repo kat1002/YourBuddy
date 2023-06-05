@@ -1,6 +1,6 @@
-# life_planner
+# Your Buddy
 
-A new Flutter project.
+An application for time management and moneywise.
 
 ## Getting Started
 
