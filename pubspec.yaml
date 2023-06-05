@@ -1,4 +1,4 @@
-name: life_planner
+name: yourbuddy
 description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -12,8 +12,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  flutter_neat_and_clean_calendar: ^0.3.13+28
-  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -23,5 +21,28 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
   assets:
     - assets/images/
+  fonts:
+    - family: SFProText
+      fonts:
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Black.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-BlackItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Bold.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-BoldItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Heavy.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-HeavyItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-LightItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Light.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Medium.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-MediumItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Regular.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-RegularItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Semibold.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-SemiboldItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Thin.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-ThinItalic.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Ultralight.otf
+        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-UltralightItalic.otf
+        - style: normal
