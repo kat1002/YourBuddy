@@ -14,11 +14,31 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple[300],
-        title: Text('Trang chủ'),
+        title: Text(
+          'Trang chủ',
+          textAlign: TextAlign.center,
+        ),
       ),
       drawer: MyDrawer(),
       body: Column(
-        children: [],
+        children: [
+          Center(
+              child: Image(
+            image: AssetImage("assets\\images\\time.jpg"),
+          )),
+          Text(
+            'Quản lý thời gian',
+            style: TextStyle(fontFamily: 'SFProText', fontSize: 36),
+          ),
+          Center(
+              child: Image(
+            image: AssetImage("assets\\images\\moneywise.jpg"),
+          )),
+          Text(
+            'Quản lý chi tiêu',
+            style: TextStyle(fontFamily: 'SFProText', fontSize: 36),
+          ),
+        ],
       ),
     );
   }
