@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yourbuddy/pages/calendar.dart';
+import 'package:yourbuddy/pages/moneywise.dart';
 import 'package:yourbuddy/pages/notification.dart';
+import 'package:yourbuddy/pages/timemanagement.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -38,28 +41,33 @@ class MyDrawer extends StatelessWidget {
               title: Text(
                 'Quản lý thời gian',
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => TimeManagement()));
+              },
             ),
             ListTile(
               leading: Icon(Icons.wallet),
               title: Text(
                 'Quản lý chi tiêu',
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Moneywise()));
+              },
             ),
             ListTile(
               leading: Icon(Icons.calendar_month_outlined),
               title: Text(
                 'Lịch biểu',
               ),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(
-                'Cài đặt',
-              ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Calendar()));
+              },
             ),
           ],
         ),

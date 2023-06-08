@@ -9,50 +9,59 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple[300],
-        title: Text(
-          'Trang chủ',
-          textAlign: TextAlign.center,
-        ),
-      ),
+      key: _globalKey,
       drawer: MyDrawer(),
-      body: Column(
-        children: [
-          Text(
-            'Chào mừng đến với',
-            style: TextStyle(
-                fontFamily: 'SFProText',
-                fontSize: 30,
-                fontWeight: FontWeight.w600),
-          ),
-          Text(
-            'YourBuddy',
-            style: TextStyle(
-                fontFamily: 'SFProText',
-                fontSize: 30,
-                fontWeight: FontWeight.w600),
-          ),
-          Center(
-              child: Image(
-            image: AssetImage("assets\\images\\time.jpg"),
-          )),
-          Text(
-            'Quản lý thời gian',
-            style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
-          ),
-          Center(
-              child: Image(
-            image: AssetImage("assets\\images\\moneywise.jpg"),
-          )),
-          Text(
-            'Quản lý chi tiêu',
-            style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
-          ),
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            IconButton(
+              onPressed: () {
+                _globalKey.currentState?.openDrawer();
+              },
+              icon: Icon(Icons.menu),
+              color: Colors.black,
+            ),
+            Column(
+              children: [
+                Text(
+                  'Chào mừng đến với',
+                  style: TextStyle(
+                      fontFamily: 'SFProText',
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  'YourBuddy',
+                  style: TextStyle(
+                      fontFamily: 'SFProText',
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600),
+                ),
+                Center(
+                    child: Image(
+                  image: AssetImage("assets\\images\\time.jpg"),
+                )),
+                Text(
+                  'Quản lý thời gian',
+                  style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
+                ),
+                Center(
+                    child: Image(
+                  image: AssetImage("assets\\images\\moneywise.jpg"),
+                )),
+                Text(
+                  'Quản lý chi tiêu',
+                  style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
