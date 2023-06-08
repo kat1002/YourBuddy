@@ -103,9 +103,6 @@ class _CalendarState extends State<Calendar> {
 
                       return;
                     } else {
-                      print(titleController.text);
-                      print(desController.text);
-
                       if (mySelectedEvents[
                               DateFormat('yyyy-MM-dd').format(today)] !=
                           null) {
