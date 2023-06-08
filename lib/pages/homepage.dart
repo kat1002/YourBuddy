@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Column(
               children: [
-                Text(
+                const Text(
                   'Chào mừng đến với',
                   style: TextStyle(
                       fontFamily: 'SFProText',
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Center(
                     child: Image(
-                  image: AssetImage("assets\\images\\time.jpg"),
+                  image: AssetImage("assets/images/time.png"),
                 )),
                 Text(
                   'Quản lý thời gian',
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Center(
                     child: Image(
-                  image: AssetImage("assets\\images\\moneywise.jpg"),
+                  image: AssetImage("assets/images/moneywise.png"),
                 )),
                 Text(
                   'Quản lý chi tiêu',
