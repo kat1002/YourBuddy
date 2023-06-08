@@ -22,13 +22,27 @@ class _HomePageState extends State<HomePage> {
       drawer: MyDrawer(),
       body: Column(
         children: [
+          Text(
+            'Chào mừng đến với',
+            style: TextStyle(
+                fontFamily: 'SFProText',
+                fontSize: 30,
+                fontWeight: FontWeight.w600),
+          ),
+          Text(
+            'YourBuddy',
+            style: TextStyle(
+                fontFamily: 'SFProText',
+                fontSize: 30,
+                fontWeight: FontWeight.w600),
+          ),
           Center(
               child: Image(
             image: AssetImage("assets\\images\\time.jpg"),
           )),
           Text(
             'Quản lý thời gian',
-            style: TextStyle(fontFamily: 'SFProText', fontSize: 36),
+            style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
           ),
           Center(
               child: Image(
@@ -36,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           )),
           Text(
             'Quản lý chi tiêu',
-            style: TextStyle(fontFamily: 'SFProText', fontSize: 36),
+            style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
           ),
         ],
       ),
