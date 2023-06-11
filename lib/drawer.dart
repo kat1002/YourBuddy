@@ -61,7 +61,7 @@ class MyDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.calendar_month_outlined),
               title: Text(
-                'Lịch biểu',
+                'Lịch',
               ),
               onTap: () {
                 Navigator.pop(context);
