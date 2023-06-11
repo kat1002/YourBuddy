@@ -15,6 +15,7 @@ dependencies:
   table_calendar: ^3.0.9
   intl: ^0.18.1
   path_provider: ^2.0.15
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -30,10 +31,6 @@ flutter:
   fonts:
     - family: SFPro
       fonts:
-        - asset: assets\fonts\SFPro\sf-pro-text-bold.ttf
-        - asset: assets\fonts\SFPro\sf-pro-text-heavy.ttf
-        - asset: assets\fonts\SFPro\sf-pro-text-light.ttf
-        - asset: assets\fonts\SFPro\sf-pro-text-medium.ttf
-        - asset: assets\fonts\SFPro\sf-pro-text-regular.ttf
-        - asset: assets\fonts\SFPro\sf-pro-text-semibold.ttf
+        - asset: assets\fonts\SF-Pro-Italic.ttf
+        - asset: assets\fonts\SF-Pro.ttf
         - style: normal
