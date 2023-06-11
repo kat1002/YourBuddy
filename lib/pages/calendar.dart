@@ -1,8 +1,13 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../models/event.dart';
+import '../util/add_event.dart';
+import '../util/edit_event.dart';
+import '../widgets/event_item.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -12,198 +17,179 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  DateTime today = DateTime.now();
-  final titleController = TextEditingController();
-  final desController = TextEditingController();
-  Map<String, List> mySelectedEvents = {};
+  late DateTime _focusedDay;
+  late DateTime _firstDay;
+  late DateTime _lastDay;
+  late DateTime _selectedDay;
+  late CalendarFormat _calendarFormat;
+  late Map<DateTime, List<Event>> _events;
+
+  int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
 
   @override
   void initState() {
-    //if()
     super.initState();
-    loadPreviousEvents();
+    _events = LinkedHashMap(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    );
+    _focusedDay = DateTime.now();
+    _firstDay = DateTime.now().subtract(const Duration(days: 1000));
+    _lastDay = DateTime.now().add(const Duration(days: 1000));
+    _selectedDay = DateTime.now();
+    _calendarFormat = CalendarFormat.month;
+    _loadFirestoreEvents();
   }
 
-  loadPreviousEvents() {
-    mySelectedEvents = {
-      "2023-06-11": [
-        {"eventDescp": "11", "eventTitle": "111"},
-        {"eventDescp": "22", "eventTitle": "22"}
-      ],
-      "2023-06-12": [
-        {"eventDescp": "22", "eventTitle": "22"}
-      ],
-      "2023-06-13": [
-        {"eventTitle": "ss", "eventDescp": "ss"}
-      ]
-    };
-  }
+  _loadFirestoreEvents() async {
+    final firstDay = DateTime(_focusedDay.year, _focusedDay.month, 1);
+    final lastDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
+    _events = {};
 
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      today = day;
-    });
-  }
-
-  List _listOfDayEvents(DateTime dateTime) {
-    if (mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
-      return mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)]!;
-    } else {
-      return [];
+    final snap = await FirebaseFirestore.instance
+        .collection('events')
+        .where('date', isGreaterThanOrEqualTo: firstDay)
+        .where('date', isLessThanOrEqualTo: lastDay)
+        .withConverter(
+            fromFirestore: Event.fromFirestore,
+            toFirestore: (event, options) => event.toFirestore())
+        .get();
+    for (var doc in snap.docs) {
+      final event = doc.data();
+      final day =
+          DateTime.utc(event.date.year, event.date.month, event.date.day);
+      if (_events[day] == null) {
+        _events[day] = [];
+      }
+      _events[day]!.add(event);
     }
+    setState(() {});
   }
 
-  _showAddEventDialog() async {
-    await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: const Text(
-                'Thêm sự kiện',
-                textAlign: TextAlign.center,
-              ),
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: titleController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: 'Tên',
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            color: Color(0xff643FDB),
-                            width: 2.0,
-                          )),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            color: Color(0xff643FDB),
-                            width: 2.0,
-                          )),
-                    ),
-                  ),
-                  TextField(
-                    controller: desController,
-                    textCapitalization: TextCapitalization.words,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      labelText: 'Nội dung',
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            color: Color(0xff643FDB),
-                            width: 2.0,
-                          )),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(
-                            color: Color(0xff643FDB),
-                            width: 2.0,
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel')),
-                TextButton(
-                  child: const Text('Done'),
-                  onPressed: () {
-                    if (titleController.text.isEmpty &&
-                        desController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Không được bỏ trống tên và nội dung'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-
-                      return;
-                    } else {
-                      if (mySelectedEvents[
-                              DateFormat('yyyy-MM-dd').format(today)] !=
-                          null) {
-                        mySelectedEvents[DateFormat('yyyy-MM-dd').format(today)]
-                            ?.add({
-                          "eventTitle": titleController.text,
-                          "eventDes": desController.text,
-                        });
-                      } else {
-                        mySelectedEvents[
-                            DateFormat('yyyy-MM-dd').format(today)] = [
-                          {
-                            "eventTitle": titleController.text,
-                            "eventDes": desController.text,
-                          }
-                        ];
-                      }
-
-                      print(
-                          'New ev for backend dev ${json.encode(mySelectedEvents)}');
-                      titleController.clear();
-                      desController.clear();
-                      Navigator.pop(context);
-                      return;
-                    }
-                  },
-                ),
-              ],
-            ));
+  List<Event> _getEventsForTheDay(DateTime day) {
+    return _events[day] ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple[300],
-        title: Text(
-          'Lịch biểu',
-          textAlign: TextAlign.center,
-        ),
-      ),
-      body: Column(
+      appBar: AppBar(title: const Text('Calendar App')),
+      body: ListView(
         children: [
-          Container(
-            child: TableCalendar(
-              locale: "en_US",
-              rowHeight: 43,
-              headerStyle: HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
+          TableCalendar(
+            eventLoader: _getEventsForTheDay,
+            calendarFormat: _calendarFormat,
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            focusedDay: _focusedDay,
+            firstDay: _firstDay,
+            lastDay: _lastDay,
+            onPageChanged: (focusedDay) {
+              setState(() {
+                _focusedDay = focusedDay;
+              });
+              _loadFirestoreEvents();
+            },
+            selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+            onDaySelected: (selectedDay, focusedDay) {
+              print(_events[selectedDay]);
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
+            calendarStyle: const CalendarStyle(
+              weekendTextStyle: TextStyle(
+                color: Colors.red,
               ),
-              availableGestures: AvailableGestures.all,
-              selectedDayPredicate: (day) => isSameDay(day, today),
-              focusedDay: today,
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2040, 10, 16),
-              onDaySelected: _onDaySelected,
-              eventLoader: _listOfDayEvents,
+              selectedDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.red,
+              ),
+            ),
+            calendarBuilders: CalendarBuilders(
+              headerTitleBuilder: (context, day) {
+                return Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(day.toString()),
+                );
+              },
             ),
           ),
-          ..._listOfDayEvents(today).map(
-            (myEvents) => ListTile(
-              leading: const Icon(
-                Icons.done,
-                color: Colors.teal,
-              ),
-              title: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text('Event Title:   ${myEvents['eventTitle']}'),
-              ),
-              subtitle: Text('Description:   ${myEvents['eventDescp']}'),
-            ),
+          ..._getEventsForTheDay(_selectedDay).map(
+            (event) => EventItem(
+                event: event,
+                onTap: () async {
+                  final res = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditEvent(
+                          firstDate: _firstDay,
+                          lastDate: _lastDay,
+                          event: event),
+                    ),
+                  );
+                  if (res ?? false) {
+                    _loadFirestoreEvents();
+                  }
+                },
+                onDelete: () async {
+                  final delete = await showDialog<bool>(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text("Delete Event?"),
+                      content: const Text("Are you sure you want to delete?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.black,
+                          ),
+                          child: const Text("No"),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.red,
+                          ),
+                          child: const Text("Yes"),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (delete ?? false) {
+                    await FirebaseFirestore.instance
+                        .collection('events')
+                        .doc(event.id)
+                        .delete();
+                    _loadFirestoreEvents();
+                  }
+                }),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddEventDialog(),
-        label: const Text('+'),
-        backgroundColor: Color(0xff643FDB),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddEvent(
+                firstDate: _firstDay,
+                lastDate: _lastDay,
+                selectedDate: _selectedDay,
+              ),
+            ),
+          );
+          if (result ?? false) {
+            _loadFirestoreEvents();
+          }
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

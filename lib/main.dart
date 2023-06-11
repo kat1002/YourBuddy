@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yourbuddy/models/calendar_event.dart';
+import 'package:yourbuddy/models/event.dart';
 import 'package:yourbuddy/pages/homepage.dart';
 
 void main() async {
