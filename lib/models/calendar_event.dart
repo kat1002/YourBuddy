@@ -1,15 +1,32 @@
-import 'package:hive/hive.dart';
+class Calendar_Event {
+  String? dateOfEvent;
+  List<Cal_Event>? events;
 
-part 'calendar_event.g.dart';
+  Calendar_Event({this.dateOfEvent, this.events});
 
-@HiveType(typeId: 0)
-class Calendar_Event extends HiveObject {
-  @HiveField(0)
+  Calendar_Event.fromJson(Map<String, dynamic> json) {
+    dateOfEvent = json['date'];
+    if (json['events'] != null) {
+      events = <Cal_Event>[];
+      (json['events'] as List).forEach((e) {
+        events!.add(Cal_Event.fromJson(e));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() => {'date': dateOfEvent, 'events': events};
+}
+
+class Cal_Event {
   String? title;
-  @HiveField(1)
-  String? description;
-  @HiveField(2)
-  DateTime? dateOfEvent;
+  String? descp;
 
-  Calendar_Event({required this.title, this.description, this.dateOfEvent});
+  Cal_Event({this.title, this.descp});
+
+  Cal_Event.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    descp = json['descp'];
+  }
+
+  Map<String, dynamic> toJson() => {'title': title, 'descp': descp};
 }

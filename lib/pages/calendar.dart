@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,19 +15,42 @@ class _CalendarState extends State<Calendar> {
   DateTime today = DateTime.now();
   final titleController = TextEditingController();
   final desController = TextEditingController();
-  final _myBox = Hive.box("Calendar_EventDB");
   Map<String, List> mySelectedEvents = {};
 
   @override
   void initState() {
     //if()
     super.initState();
+    loadPreviousEvents();
+  }
+
+  loadPreviousEvents() {
+    mySelectedEvents = {
+      "2023-06-11": [
+        {"eventDescp": "11", "eventTitle": "111"},
+        {"eventDescp": "22", "eventTitle": "22"}
+      ],
+      "2023-06-12": [
+        {"eventDescp": "22", "eventTitle": "22"}
+      ],
+      "2023-06-13": [
+        {"eventTitle": "ss", "eventDescp": "ss"}
+      ]
+    };
   }
 
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
       today = day;
     });
+  }
+
+  List _listOfDayEvents(DateTime dateTime) {
+    if (mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)] != null) {
+      return mySelectedEvents[DateFormat('yyyy-MM-dd').format(dateTime)]!;
+    } else {
+      return [];
+    }
   }
 
   _showAddEventDialog() async {
@@ -160,6 +182,20 @@ class _CalendarState extends State<Calendar> {
               firstDay: DateTime.utc(2010, 10, 16),
               lastDay: DateTime.utc(2040, 10, 16),
               onDaySelected: _onDaySelected,
+              eventLoader: _listOfDayEvents,
+            ),
+          ),
+          ..._listOfDayEvents(today).map(
+            (myEvents) => ListTile(
+              leading: const Icon(
+                Icons.done,
+                color: Colors.teal,
+              ),
+              title: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text('Event Title:   ${myEvents['eventTitle']}'),
+              ),
+              subtitle: Text('Description:   ${myEvents['eventDescp']}'),
             ),
           ),
         ],
