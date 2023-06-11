@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:yourbuddy/models/calendar_event.dart';
 import 'package:yourbuddy/pages/homepage.dart';
 
 void main() async {
-  await Hive.initFlutter();
-
-  await Hive.openBox('Calendar_EventDB');
-
   runApp(MyApp());
 }
 
@@ -17,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: HomePage(),
       theme: ThemeData(
-        fontFamily: 'SFProText',
+        fontFamily: 'SFPro',
       ),
       debugShowCheckedModeBanner: false,
     );

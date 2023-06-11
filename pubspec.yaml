@@ -13,11 +13,8 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.9
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
   intl: ^0.18.1
-  build_runner: ^2.3.3
-  hive_generator: ^2.0.0
+  path_provider: ^2.0.15
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -31,24 +28,12 @@ flutter:
     - assets/images/
 
   fonts:
-    - family: SFProText
+    - family: SFPro
       fonts:
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Black.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-BlackItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Bold.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-BoldItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Heavy.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-HeavyItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-LightItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Light.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Medium.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-MediumItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Regular.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-RegularItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Semibold.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-SemiboldItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Thin.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-ThinItalic.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-Ultralight.otf
-        - asset: assets\fonts\SF Pro Text\SF-Pro-Text-UltralightItalic.otf
+        - asset: assets\fonts\SFPro\sf-pro-text-bold.ttf
+        - asset: assets\fonts\SFPro\sf-pro-text-heavy.ttf
+        - asset: assets\fonts\SFPro\sf-pro-text-light.ttf
+        - asset: assets\fonts\SFPro\sf-pro-text-medium.ttf
+        - asset: assets\fonts\SFPro\sf-pro-text-regular.ttf
+        - asset: assets\fonts\SFPro\sf-pro-text-semibold.ttf
         - style: normal

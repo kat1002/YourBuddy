@@ -28,17 +28,17 @@ class _HomePageState extends State<HomePage> {
             ),
             Column(
               children: [
-                const Text(
+                Text(
                   'Chào mừng đến với',
                   style: TextStyle(
-                      fontFamily: 'SFProText',
+                      fontFamily: 'SFPro',
                       fontSize: 30,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
                   'YourBuddy',
                   style: TextStyle(
-                      fontFamily: 'SFProText',
+                      fontFamily: 'SFPro',
                       fontSize: 30,
                       fontWeight: FontWeight.w600),
                 ),
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 )),
                 Text(
                   'Quản lý thời gian',
-                  style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
+                  style: TextStyle(fontFamily: 'SFPro', fontSize: 24),
                 ),
                 Center(
                     child: Image(
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                 )),
                 Text(
                   'Quản lý chi tiêu',
-                  style: TextStyle(fontFamily: 'SFProText', fontSize: 24),
+                  style: TextStyle(fontFamily: 'SFPro', fontSize: 24),
                 ),
               ],
             ),
