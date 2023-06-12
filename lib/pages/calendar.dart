@@ -138,7 +138,10 @@ class _CalendarState extends State<Calendar> {
               headerTitleBuilder: (context, day) {
                 return Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(DateFormat.yMMMEd().format(day).toString()),
+                  child: Text(
+                    DateFormat.yMMMEd().format(day).toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 );
               },
             ),

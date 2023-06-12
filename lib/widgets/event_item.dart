@@ -23,7 +23,7 @@ class EventItem extends StatelessWidget {
             fontFamily: 'SFPro', fontSize: 24, fontWeight: FontWeight.bold),
       ),
       subtitle: Text(
-        DateFormat.yMMMMEEEEd().format(event.date).toString(),
+        DateFormat.MMMMEEEEd().format(event.date).toString(),
       ),
       onTap: onTap,
       trailing: IconButton(
