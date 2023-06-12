@@ -1,9 +1,10 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:yourbuddy/util/event_data_store.dart';
 
+import '../drawer.dart';
 import '../models/event.dart';
 import '../util/add_event.dart';
 import '../util/edit_event.dart';
@@ -17,6 +18,8 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  EventDataStore db = EventDataStore();
+
   late DateTime _focusedDay;
   late DateTime _firstDay;
   late DateTime _lastDay;
@@ -40,31 +43,26 @@ class _CalendarState extends State<Calendar> {
     _lastDay = DateTime.now().add(const Duration(days: 1000));
     _selectedDay = DateTime.now();
     _calendarFormat = CalendarFormat.month;
-    _loadFirestoreEvents();
+    //_loadFirestoreEvents();
+    _loadEventsFromHive();
   }
 
-  _loadFirestoreEvents() async {
+  _loadEventsFromHive() async {
     final firstDay = DateTime(_focusedDay.year, _focusedDay.month, 1);
-    final lastDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
+    final lastDat = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
+
     _events = {};
 
-    final snap = await FirebaseFirestore.instance
-        .collection('events')
-        .where('date', isGreaterThanOrEqualTo: firstDay)
-        .where('date', isLessThanOrEqualTo: lastDay)
-        .withConverter(
-            fromFirestore: Event.fromFirestore,
-            toFirestore: (event, options) => event.toFirestore())
-        .get();
-    for (var doc in snap.docs) {
-      final event = doc.data();
-      final day =
-          DateTime.utc(event.date.year, event.date.month, event.date.day);
+    List events = db.box.values.toList();
+
+    for (var ev in events) {
+      final day = DateTime.utc(ev.date.year, ev.date.month, ev.date.day);
       if (_events[day] == null) {
         _events[day] = [];
       }
-      _events[day]!.add(event);
+      _events[day]!.add(ev);
     }
+
     setState(() {});
   }
 
@@ -74,8 +72,27 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Calendar App')),
+      key: _globalKey,
+      drawer: MyDrawer(),
+      appBar: AppBar(
+        title: const Text(
+          'Lịch',
+          style: TextStyle(color: Color(0xff1f1f1f)),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            _globalKey.currentState?.openDrawer();
+          },
+          icon: Icon(Icons.menu),
+          color: Colors.black,
+        ),
+      ),
       body: ListView(
         children: [
           TableCalendar(
@@ -93,7 +110,8 @@ class _CalendarState extends State<Calendar> {
               setState(() {
                 _focusedDay = focusedDay;
               });
-              _loadFirestoreEvents();
+              //_loadFirestoreEvents();
+              _loadEventsFromHive();
             },
             selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
             onDaySelected: (selectedDay, focusedDay) {
@@ -105,11 +123,11 @@ class _CalendarState extends State<Calendar> {
             },
             calendarStyle: const CalendarStyle(
               weekendTextStyle: TextStyle(
-                color: Colors.red,
+                color: Color(0xff643FDB),
               ),
               selectedDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Colors.red,
+                shape: BoxShape.circle,
+                color: Color(0xff643FDB),
               ),
             ),
             calendarBuilders: CalendarBuilders(
@@ -135,7 +153,8 @@ class _CalendarState extends State<Calendar> {
                     ),
                   );
                   if (res ?? false) {
-                    _loadFirestoreEvents();
+                    //_loadFirestoreEvents();
+                    _loadEventsFromHive();
                   }
                 },
                 onDelete: () async {
@@ -163,17 +182,15 @@ class _CalendarState extends State<Calendar> {
                     ),
                   );
                   if (delete ?? false) {
-                    await FirebaseFirestore.instance
-                        .collection('events')
-                        .doc(event.id)
-                        .delete();
-                    _loadFirestoreEvents();
+                    await db.deleteEvent(event);
+                    _loadEventsFromHive();
                   }
                 }),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xff643FDB),
         onPressed: () async {
           final result = await Navigator.push<bool>(
             context,
@@ -186,7 +203,8 @@ class _CalendarState extends State<Calendar> {
             ),
           );
           if (result ?? false) {
-            _loadFirestoreEvents();
+            //_loadFirestoreEvents();
+            await _loadEventsFromHive();
           }
         },
         child: const Icon(Icons.add),

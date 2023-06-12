@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yourbuddy/util/event_data_store.dart';
 import '../models/event.dart';
 
 class EditEvent extends StatefulWidget {
@@ -17,9 +18,12 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+  EventDataStore db = EventDataStore();
+
   late DateTime _selectedDate;
   late TextEditingController _titleController;
   late TextEditingController _descController;
+
   @override
   void initState() {
     super.initState();
@@ -75,14 +79,11 @@ class _EditEventState extends State<EditEvent> {
       return;
     }
 
-    await FirebaseFirestore.instance
-        .collection('events')
-        .doc(widget.event.id)
-        .update({
-      "title": title,
-      "description": description,
-      "date": Timestamp.fromDate(_selectedDate),
-    });
+    widget.event.title = title;
+    widget.event.description = description;
+    widget.event.date = _selectedDate;
+
+    await db.updateEvent(widget.event);
 
     if (mounted) {
       Navigator.pop<bool>(context, true);

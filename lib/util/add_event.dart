@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yourbuddy/models/event.dart';
+import 'package:yourbuddy/util/event_data_store.dart';
 
 class AddEvent extends StatefulWidget {
   final DateTime firstDate;
@@ -19,6 +21,9 @@ class _AddEventState extends State<AddEvent> {
   late DateTime _selectedDate;
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
+
+  EventDataStore db = EventDataStore();
+
   @override
   void initState() {
     super.initState();
@@ -72,11 +77,8 @@ class _AddEventState extends State<AddEvent> {
       return;
     }
 
-    await FirebaseFirestore.instance.collection('events').add({
-      "title": title,
-      "description": description,
-      "date": Timestamp.fromDate(_selectedDate),
-    });
+    await db.createEvent(
+        Event.create(title: title, descp: description, date: _selectedDate));
 
     if (mounted) {
       Navigator.pop<bool>(context, true);

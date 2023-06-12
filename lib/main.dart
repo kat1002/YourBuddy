@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:yourbuddy/models/event.dart';
 import 'package:yourbuddy/pages/homepage.dart';
+import 'package:hive/hive.dart';
 
 void main() async {
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(EventAdapter());
+
+  await Hive.openBox("Event_Database");
+  await Hive.openBox("Task_Database");
+
   runApp(MyApp());
 }
 
