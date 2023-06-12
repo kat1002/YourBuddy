@@ -35,7 +35,23 @@ class _EditEventState extends State<EditEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Event")),
+      appBar: AppBar(
+        title: const Text(
+          'Sửa hoạt động',
+          style: TextStyle(color: Color(0xff1f1f1f)),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Color(0xff1f1f1f),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -65,6 +81,9 @@ class _EditEventState extends State<EditEvent> {
               _addEvent();
             },
             child: const Text("Save"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xff643FDB),
+            ),
           ),
         ],
       ),

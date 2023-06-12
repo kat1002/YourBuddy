@@ -33,7 +33,23 @@ class _AddEventState extends State<AddEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Event")),
+      appBar: AppBar(
+        title: const Text(
+          'Tạo hoạt động',
+          style: TextStyle(color: Color(0xff1f1f1f)),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          color: Color(0xff1f1f1f),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
