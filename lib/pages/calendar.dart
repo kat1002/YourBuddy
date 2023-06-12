@@ -9,6 +9,7 @@ import '../models/event.dart';
 import '../util/add_event.dart';
 import '../util/edit_event.dart';
 import '../widgets/event_item.dart';
+import 'package:intl/intl.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -122,9 +123,12 @@ class _CalendarState extends State<Calendar> {
               });
             },
             calendarStyle: const CalendarStyle(
-              weekendTextStyle: TextStyle(
-                color: Color(0xff643FDB),
+              defaultTextStyle: TextStyle(
+                fontFamily: 'SFPro',
+                fontWeight: FontWeight.bold,
               ),
+              weekendTextStyle:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               selectedDecoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xff643FDB),
@@ -134,7 +138,7 @@ class _CalendarState extends State<Calendar> {
               headerTitleBuilder: (context, day) {
                 return Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(day.toString()),
+                  child: Text(DateFormat.yMMMEd().format(day).toString()),
                 );
               },
             ),
