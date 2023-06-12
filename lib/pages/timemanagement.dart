@@ -17,6 +17,7 @@ class _TimeManagementState extends State<TimeManagement> {
       key: _globalKey,
       drawer: MyDrawer(),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           'Quản lý thời gian',
           style: TextStyle(color: Color(0xff1f1f1f)),

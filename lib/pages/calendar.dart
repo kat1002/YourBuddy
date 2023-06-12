@@ -78,10 +78,13 @@ class _CalendarState extends State<Calendar> {
       key: _globalKey,
       drawer: MyDrawer(),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           'Lịch',
-          style: TextStyle(color: Color(0xff1f1f1f)),
-          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Color(0xff1f1f1f),
+              fontWeight: FontWeight.bold,
+              fontSize: 24),
         ),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
