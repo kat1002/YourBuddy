@@ -12,15 +12,18 @@ class Transaction extends HiveObject {
   @HiveField(2)
   double amount;
   @HiveField(3)
-  String? note;
+  DateTime? date;
   @HiveField(4)
-  TransactionType type;
+  String? note;
   @HiveField(5)
+  TransactionType type;
+  @HiveField(6)
   Category category;
   Transaction({
     required this.id,
     required this.title,
     required this.amount,
+    this.date,
     this.note,
     required this.type,
     required this.category,
@@ -29,6 +32,7 @@ class Transaction extends HiveObject {
   factory Transaction.create(
           {required String title,
           required double amount,
+          DateTime? date,
           String? note,
           required TransactionType type,
           required Category category}) =>
@@ -36,6 +40,7 @@ class Transaction extends HiveObject {
           id: Uuid().v1(),
           title: title,
           amount: amount,
+          date: date ?? DateTime.now(),
           type: type,
           category: category);
 }

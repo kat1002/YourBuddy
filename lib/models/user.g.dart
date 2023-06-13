@@ -1,50 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transaction.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TransactionAdapter extends TypeAdapter<Transaction> {
+class UserAdapter extends TypeAdapter<User> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  Transaction read(BinaryReader reader) {
+  User read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Transaction(
-      id: fields[0] as String,
-      title: fields[1] as String,
-      amount: fields[2] as double,
-      date: fields[3] as DateTime?,
-      note: fields[4] as String?,
-      type: fields[5] as TransactionType,
-      category: fields[6] as Category,
+    return User(
+      name: fields[0] as String?,
+      age: fields[1] as int?,
+      email: fields[2] as String?,
+      account: fields[3] as double?,
+      notifications: fields[4] as int?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Transaction obj) {
+  void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(7)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.title)
-      ..writeByte(2)
-      ..write(obj.amount)
-      ..writeByte(3)
-      ..write(obj.date)
-      ..writeByte(4)
-      ..write(obj.note)
       ..writeByte(5)
-      ..write(obj.type)
-      ..writeByte(6)
-      ..write(obj.category);
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.age)
+      ..writeByte(2)
+      ..write(obj.email)
+      ..writeByte(3)
+      ..write(obj.account)
+      ..writeByte(4)
+      ..write(obj.notifications);
   }
 
   @override
@@ -53,7 +47,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TransactionAdapter &&
+      other is UserAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

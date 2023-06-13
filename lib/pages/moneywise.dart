@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yourbuddy/models/transaction.dart';
 import 'package:yourbuddy/util/add_transaction.dart';
+import 'package:yourbuddy/util/transaction_data_store.dart';
 
 import '../drawer.dart';
 
@@ -11,12 +13,55 @@ class Moneywise extends StatefulWidget {
 }
 
 class _MoneywiseState extends State<Moneywise> {
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
+  TransactionDataStore db = TransactionDataStore();
+
+  late Map<DateTime, List<Transaction>> _transactions;
+  late DateTime _firstDay;
+  late DateTime _lastDay;
+  late DateTime _focusedDay = DateTime.now();
+
+  double account = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    account = 0;
+
+    _focusedDay = DateTime.now();
+    _firstDay = DateTime.now().subtract(const Duration(days: 1000));
+    _lastDay = DateTime.now().add(const Duration(days: 1000));
+    _loadDataFromHive();
+  }
+
+  _loadDataFromHive() async {
+    final firstDay = DateTime(_focusedDay.year, _focusedDay.month, 1);
+    final lastDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
+
+    _transactions = {};
+
+    List transactions = db.box.values.toList();
+
+    for (var transaction in transactions) {
+      final month = DateTime.utc(transaction.date.year, transaction.date.month);
+      if (_transactions[month] == null) {
+        _transactions[month] = [];
+      }
+      _transactions[month]!.add(transaction);
+      account += transaction.amount.toDouble();
+    }
+
+    setState(() {});
+  }
+
+  List<Transaction> _getTransactionsForTheMonth(DateTime month) {
+    return _transactions[month] ?? [];
+  }
+
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-
-    int account = 0;
-
     return Scaffold(
       key: _globalKey,
       drawer: MyDrawer(),
@@ -73,6 +118,7 @@ class _MoneywiseState extends State<Moneywise> {
           if (result ?? false) {
             //_loadFirestoreEvents();
             //await _loadEventsFromHive();
+            await _loadDataFromHive();
           }
         },
         child: const Icon(Icons.add),
