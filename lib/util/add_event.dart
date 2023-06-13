@@ -31,6 +31,13 @@ class _AddEventState extends State<AddEvent> {
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _descController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -50,38 +57,59 @@ class _AddEventState extends State<AddEvent> {
           color: Color(0xff1f1f1f),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          InputDatePickerFormField(
-            firstDate: widget.firstDate,
-            lastDate: widget.lastDate,
-            initialDate: _selectedDate,
-            onDateSubmitted: (date) {
-              print(date);
-              setState(() {
-                _selectedDate = date;
-              });
-            },
-          ),
-          TextField(
-            controller: _titleController,
-            maxLines: 1,
-            decoration: const InputDecoration(labelText: 'title'),
-          ),
-          TextField(
-            controller: _descController,
-            maxLines: 5,
-            decoration: const InputDecoration(labelText: 'description'),
-          ),
-          ElevatedButton(
+      body: Stack(children: [
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: ElevatedButton.icon(
+            icon: Icon(
+              Icons.arrow_forward_rounded,
+            ),
+            label: Text(
+              'Done',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xff643FDB),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Color(0xff643FDB)),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
             onPressed: () {
               _addEvent();
             },
-            child: const Text("Save"),
           ),
-        ],
-      ),
+        ),
+        ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: [
+            InputDatePickerFormField(
+              firstDate: widget.firstDate,
+              lastDate: widget.lastDate,
+              initialDate: _selectedDate,
+              onDateSubmitted: (date) {
+                print(date);
+                setState(() {
+                  _selectedDate = date;
+                });
+              },
+            ),
+            TextField(
+              controller: _titleController,
+              maxLines: 1,
+              decoration: const InputDecoration(labelText: 'title'),
+            ),
+            TextField(
+              controller: _descController,
+              maxLines: 5,
+              decoration: const InputDecoration(labelText: 'description'),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 

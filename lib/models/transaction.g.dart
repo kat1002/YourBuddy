@@ -1,38 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'money.dart';
+part of 'transaction.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MoneyAdapter extends TypeAdapter<Money> {
+class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
   final int typeId = 1;
 
   @override
-  Money read(BinaryReader reader) {
+  Transaction read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Money(
+    return Transaction(
       id: fields[0] as String,
       title: fields[1] as String,
       amount: fields[2] as double,
+      note: fields[3] as String?,
+      type: fields[4] as TransactionType,
+      category: fields[5] as Category,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Money obj) {
+  void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.amount);
+      ..write(obj.amount)
+      ..writeByte(3)
+      ..write(obj.note)
+      ..writeByte(4)
+      ..write(obj.type)
+      ..writeByte(5)
+      ..write(obj.category);
   }
 
   @override
@@ -41,7 +50,7 @@ class MoneyAdapter extends TypeAdapter<Money> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MoneyAdapter &&
+      other is TransactionAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

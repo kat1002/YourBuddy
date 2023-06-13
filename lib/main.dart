@@ -11,6 +11,7 @@ void main() async {
 
   await Hive.openBox("Event_Database");
   await Hive.openBox("Task_Database");
+  await Hive.openBox("Transaction_Database");
 
   runApp(MyApp());
 }
