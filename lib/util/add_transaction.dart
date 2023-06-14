@@ -120,7 +120,6 @@ class _AddTransactionState extends State<AddTransaction> {
                         value: e,
                       ))
                   .toList(),
-              dropdownColor: Color(0xff643FDB),
               icon: const Icon(
                 Icons.arrow_drop_down_circle,
                 color: Color(0xff643FDB),

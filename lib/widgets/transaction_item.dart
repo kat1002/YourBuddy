@@ -17,14 +17,20 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: Icon(
+        Icons.wallet_giftcard_rounded,
+        color: Colors.orange,
+      ),
       title: Text(
         transaction.title,
         style: TextStyle(
             fontFamily: 'SFPro', fontSize: 24, fontWeight: FontWeight.bold),
       ),
       subtitle: Text(
-        transaction.amount.toString() +
-            " VND\n" +
+        NumberFormat.simpleCurrency(
+                    name: 'VND', decimalDigits: 2, locale: "vi_VN")
+                .format(transaction.amount) +
+            "\n" +
             DateFormat.MMMMEEEEd().format(transaction.date).toString(),
       ),
       onTap: onTap,

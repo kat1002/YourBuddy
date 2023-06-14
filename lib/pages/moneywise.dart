@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:yourbuddy/models/transaction.dart';
 import 'package:yourbuddy/util/add_transaction.dart';
 import 'package:yourbuddy/util/edit_transaction.dart';
 import 'package:yourbuddy/util/transaction_data_store.dart';
+import 'package:yourbuddy/widgets/money_box.dart';
 import 'package:yourbuddy/widgets/transaction_item.dart';
 
 import '../drawer.dart';
@@ -27,6 +29,8 @@ class _MoneywiseState extends State<Moneywise> {
   late DateTime _focusedDay = DateTime.now();
 
   double account = 0;
+  double income = 0;
+  double expense = 0;
 
   @override
   void initState() {
@@ -46,6 +50,9 @@ class _MoneywiseState extends State<Moneywise> {
 
     _transactions = [];
 
+    account = 0;
+    income = 0;
+    expense = 0;
     List transactions = db.box.values.toList();
 
     for (var transaction in transactions) {
@@ -53,9 +60,11 @@ class _MoneywiseState extends State<Moneywise> {
       switch (transaction.type) {
         case TransactionType.Income:
           account += transaction.amount;
+          income += transaction.amount;
           break;
         case TransactionType.Expense:
           account -= transaction.amount;
+          expense += transaction.amount;
           break;
       }
     }
@@ -64,7 +73,7 @@ class _MoneywiseState extends State<Moneywise> {
   }
 
   List<Transaction> _getTransactions() {
-    return _transactions;
+    return _transactions.reversed.toList();
   }
 
   @override
@@ -95,22 +104,7 @@ class _MoneywiseState extends State<Moneywise> {
       ),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-            child: Text(
-              'Tài khoản',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
-            child: Text(
-              '$account VND',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              textAlign: TextAlign.right,
-            ),
-          ),
+          Money_Box(account: account, income: income, expense: expense),
           ..._getTransactions().map(
             (transaction) => TransactionItem(
                 transaction: transaction,
