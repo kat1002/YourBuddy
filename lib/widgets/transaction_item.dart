@@ -23,7 +23,9 @@ class TransactionItem extends StatelessWidget {
             fontFamily: 'SFPro', fontSize: 24, fontWeight: FontWeight.bold),
       ),
       subtitle: Text(
-        transaction.amount.toString(),
+        transaction.amount.toString() +
+            " VND\n" +
+            DateFormat.MMMMEEEEd().format(transaction.date).toString(),
       ),
       onTap: onTap,
       trailing: IconButton(

@@ -76,16 +76,22 @@ class _EditEventState extends State<EditEvent> {
             maxLines: 5,
             decoration: const InputDecoration(labelText: 'description'),
           ),
-          ElevatedButton(
-            onPressed: () {
-              _addEvent();
-            },
-            child: const Text("Save"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xff643FDB),
-            ),
-          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(
+          Icons.arrow_forward_rounded,
+        ),
+        label: Text(
+          'Done',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Color(0xff643FDB),
+        onPressed: () {
+          _addEvent();
+        },
       ),
     );
   }

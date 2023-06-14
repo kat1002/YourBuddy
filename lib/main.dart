@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:yourbuddy/models/event.dart';
+import 'package:yourbuddy/models/transaction.dart';
+import 'package:yourbuddy/models/user.dart';
 import 'package:yourbuddy/pages/homepage.dart';
 import 'package:hive/hive.dart';
 
@@ -8,10 +10,15 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(EventAdapter());
+  Hive.registerAdapter(TransactionAdapter());
+  Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(TransactionTypeAdapter());
+  Hive.registerAdapter(CategoryAdapter());
 
   await Hive.openBox("Event_Database");
   await Hive.openBox("Task_Database");
   await Hive.openBox("Transaction_Database");
+  await Hive.openBox("User_Database");
 
   runApp(MyApp());
 }

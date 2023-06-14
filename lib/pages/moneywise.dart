@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:yourbuddy/models/transaction.dart';
 import 'package:yourbuddy/util/add_transaction.dart';
+import 'package:yourbuddy/util/edit_transaction.dart';
 import 'package:yourbuddy/util/transaction_data_store.dart';
+import 'package:yourbuddy/widgets/transaction_item.dart';
 
 import '../drawer.dart';
 
@@ -15,9 +18,10 @@ class Moneywise extends StatefulWidget {
 class _MoneywiseState extends State<Moneywise> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
 
+  Box user_db = Hive.box("User_Database");
   TransactionDataStore db = TransactionDataStore();
 
-  late Map<DateTime, List<Transaction>> _transactions;
+  late List<Transaction> _transactions;
   late DateTime _firstDay;
   late DateTime _lastDay;
   late DateTime _focusedDay = DateTime.now();
@@ -40,24 +44,27 @@ class _MoneywiseState extends State<Moneywise> {
     final firstDay = DateTime(_focusedDay.year, _focusedDay.month, 1);
     final lastDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
 
-    _transactions = {};
+    _transactions = [];
 
     List transactions = db.box.values.toList();
 
     for (var transaction in transactions) {
-      final month = DateTime.utc(transaction.date.year, transaction.date.month);
-      if (_transactions[month] == null) {
-        _transactions[month] = [];
+      _transactions.add(transaction);
+      switch (transaction.type) {
+        case TransactionType.Income:
+          account += transaction.amount;
+          break;
+        case TransactionType.Expense:
+          account -= transaction.amount;
+          break;
       }
-      _transactions[month]!.add(transaction);
-      account += transaction.amount.toDouble();
     }
 
     setState(() {});
   }
 
-  List<Transaction> _getTransactionsForTheMonth(DateTime month) {
-    return _transactions[month] ?? [];
+  List<Transaction> _getTransactions() {
+    return _transactions;
   }
 
   @override
@@ -86,7 +93,7 @@ class _MoneywiseState extends State<Moneywise> {
           color: Colors.black,
         ),
       ),
-      body: Column(
+      body: ListView(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -104,6 +111,53 @@ class _MoneywiseState extends State<Moneywise> {
               textAlign: TextAlign.right,
             ),
           ),
+          ..._getTransactions().map(
+            (transaction) => TransactionItem(
+                transaction: transaction,
+                onTap: () async {
+                  final res = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditTransaction(
+                        transaction: transaction,
+                      ),
+                    ),
+                  );
+                  if (res ?? false) {
+                    //_loadFirestoreEvents();
+                    _loadDataFromHive();
+                  }
+                },
+                onDelete: () async {
+                  final delete = await showDialog<bool>(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text("Delete Event?"),
+                      content: const Text("Are you sure you want to delete?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.black,
+                          ),
+                          child: const Text("No"),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.red,
+                          ),
+                          child: const Text("Yes"),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (delete ?? false) {
+                    await db.deleteTransaction(transaction);
+                    _loadDataFromHive();
+                  }
+                }),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -118,7 +172,7 @@ class _MoneywiseState extends State<Moneywise> {
           if (result ?? false) {
             //_loadFirestoreEvents();
             //await _loadEventsFromHive();
-            await _loadDataFromHive();
+            _loadDataFromHive();
           }
         },
         child: const Icon(Icons.add),

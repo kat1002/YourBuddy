@@ -57,59 +57,47 @@ class _AddEventState extends State<AddEvent> {
           color: Color(0xff1f1f1f),
         ),
       ),
-      body: Stack(children: [
-        Positioned(
-          bottom: 10,
-          right: 10,
-          child: ElevatedButton.icon(
-            icon: Icon(
-              Icons.arrow_forward_rounded,
-            ),
-            label: Text(
-              'Done',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Color(0xff643FDB),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Color(0xff643FDB)),
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            onPressed: () {
-              _addEvent();
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          InputDatePickerFormField(
+            firstDate: widget.firstDate,
+            lastDate: widget.lastDate,
+            initialDate: _selectedDate,
+            onDateSubmitted: (date) {
+              print(date);
+              setState(() {
+                _selectedDate = date;
+              });
             },
           ),
+          TextField(
+            controller: _titleController,
+            maxLines: 1,
+            decoration: const InputDecoration(labelText: 'title'),
+          ),
+          TextField(
+            controller: _descController,
+            maxLines: 5,
+            decoration: const InputDecoration(labelText: 'description'),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(
+          Icons.arrow_forward_rounded,
         ),
-        ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: [
-            InputDatePickerFormField(
-              firstDate: widget.firstDate,
-              lastDate: widget.lastDate,
-              initialDate: _selectedDate,
-              onDateSubmitted: (date) {
-                print(date);
-                setState(() {
-                  _selectedDate = date;
-                });
-              },
-            ),
-            TextField(
-              controller: _titleController,
-              maxLines: 1,
-              decoration: const InputDecoration(labelText: 'title'),
-            ),
-            TextField(
-              controller: _descController,
-              maxLines: 5,
-              decoration: const InputDecoration(labelText: 'description'),
-            ),
-          ],
+        label: Text(
+          'Done',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ]),
+        backgroundColor: Color(0xff643FDB),
+        onPressed: () {
+          _addEvent();
+        },
+      ),
     );
   }
 
