@@ -32,8 +32,8 @@ class MyDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NotificationsPage()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => NotiPage()));
               },
             ),
             ListTile(
