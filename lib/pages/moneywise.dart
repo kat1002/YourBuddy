@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:yourbuddy/models/transaction.dart';
 import 'package:yourbuddy/util/add_transaction.dart';
 import 'package:yourbuddy/util/edit_transaction.dart';
 import 'package:yourbuddy/util/transaction_data_store.dart';
+import 'package:yourbuddy/widgets/chitieu.dart';
 import 'package:yourbuddy/widgets/money_box.dart';
+import 'package:yourbuddy/widgets/thunhap.dart';
 import 'package:yourbuddy/widgets/transaction_item.dart';
 
 import '../drawer.dart';
@@ -105,6 +106,13 @@ class _MoneywiseState extends State<Moneywise> {
       body: ListView(
         children: [
           Money_Box(account: account, income: income, expense: expense),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ThuNhapBox(income: income),
+              ChiTieuBox(expense: expense)
+            ],
+          ),
           ..._getTransactions().map(
             (transaction) => TransactionItem(
                 transaction: transaction,
@@ -126,7 +134,7 @@ class _MoneywiseState extends State<Moneywise> {
                   final delete = await showDialog<bool>(
                     context: context,
                     builder: (_) => AlertDialog(
-                      title: const Text("Delete Event?"),
+                      title: const Text("Delete Transaction?"),
                       content: const Text("Are you sure you want to delete?"),
                       actions: [
                         TextButton(
