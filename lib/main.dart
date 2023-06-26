@@ -5,7 +5,6 @@ import 'package:yourbuddy/models/task.dart';
 import 'package:yourbuddy/models/transaction.dart';
 import 'package:yourbuddy/models/user.dart';
 import 'package:yourbuddy/pages/homepage.dart';
-import 'package:hive/hive.dart';
 
 void main() async {
   await Hive.initFlutter();
