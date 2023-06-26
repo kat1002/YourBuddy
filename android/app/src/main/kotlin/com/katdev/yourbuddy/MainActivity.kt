@@ -1,4 +1,4 @@
-package com.example.life_planner
+package com.katdev.yourbuddy
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.life_planner">
+    package="com.katdev.yourbuddy">
    <application
         android:label="YourBuddy"
         android:name="${applicationName}"
