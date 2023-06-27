@@ -13,12 +13,15 @@ class Task extends HiveObject {
   String? description;
   @HiveField(3)
   DateTime deadline;
+  @HiveField(4)
+  bool? isDone;
 
   Task(
       {required this.id,
       required this.title,
       this.description,
-      required this.deadline});
+      required this.deadline,
+      this.isDone = false});
 
   factory Task.create(
           {required String title, String? description, DateTime? dealdine}) =>
@@ -26,5 +29,6 @@ class Task extends HiveObject {
           id: Uuid().v1(),
           title: title,
           description: description,
-          deadline: dealdine ?? DateTime.now());
+          deadline: dealdine ?? DateTime.now(),
+          isDone: false);
 }

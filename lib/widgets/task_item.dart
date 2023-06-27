@@ -18,8 +18,7 @@ class TaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-        Icons.task,
-        color: Colors.green,
+        Icons.check_box,
       ),
       title: Text(
         task.title,

@@ -23,6 +23,7 @@ class _EditTaskState extends State<EditTask> {
   late DateTime _selectedDate;
   late TextEditingController _titleController;
   late TextEditingController _descController;
+  late bool? isDone;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _EditTaskState extends State<EditTask> {
     _selectedDate = widget.task.deadline;
     _titleController = TextEditingController(text: widget.task.title);
     _descController = TextEditingController(text: widget.task.description);
+    isDone = widget.task.isDone;
   }
 
   @override
@@ -107,6 +109,7 @@ class _EditTaskState extends State<EditTask> {
     widget.task.title = title;
     widget.task.description = description;
     widget.task.deadline = _selectedDate;
+    widget.task.isDone = isDone;
 
     await db.updateTask(widget.task);
 
