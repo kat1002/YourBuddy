@@ -127,7 +127,7 @@ class _CalendarState extends State<Calendar> {
             },
             calendarStyle: const CalendarStyle(
               defaultTextStyle: TextStyle(
-                fontFamily: 'SFPro',
+                fontFamily: 'SF Pro Text',
                 fontWeight: FontWeight.bold,
               ),
               weekendTextStyle:

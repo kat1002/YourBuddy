@@ -61,7 +61,10 @@ class _TimeManagementState extends State<TimeManagement> {
         centerTitle: true,
         title: const Text(
           'Quản lý thời gian',
-          style: TextStyle(color: Color(0xff1f1f1f)),
+          style: TextStyle(
+              color: Color(0xff1f1f1f),
+              fontSize: 24,
+              fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         backgroundColor: Colors.transparent,

@@ -15,30 +15,44 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Trang chủ',
+          style: TextStyle(
+              color: Color(0xff1f1f1f),
+              fontSize: 24,
+              fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            _globalKey.currentState?.openDrawer();
+          },
+          icon: Icon(Icons.menu),
+          color: Colors.black,
+        ),
+      ),
       drawer: MyDrawer(),
       body: SafeArea(
-        child: Stack(
+        child: ListView(
           children: [
-            IconButton(
-              onPressed: () {
-                _globalKey.currentState?.openDrawer();
-              },
-              icon: Icon(Icons.menu),
-              color: Colors.black,
-            ),
             Column(
               children: [
                 Text(
                   'Chào mừng đến với',
                   style: TextStyle(
-                      fontFamily: 'SFPro',
+                      fontFamily: 'SF Pro Text',
                       fontSize: 30,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
                   'YourBuddy',
                   style: TextStyle(
-                      fontFamily: 'SFPro',
+                      fontFamily: 'SF Pro Text',
                       fontSize: 30,
                       fontWeight: FontWeight.w600),
                 ),
@@ -48,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 )),
                 Text(
                   'Quản lý thời gian',
-                  style: TextStyle(fontFamily: 'SFPro', fontSize: 24),
+                  style: TextStyle(fontFamily: 'SF Pro Text', fontSize: 24),
                 ),
                 Center(
                     child: Image(
@@ -56,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                 )),
                 Text(
                   'Quản lý chi tiêu',
-                  style: TextStyle(fontFamily: 'SFPro', fontSize: 24),
+                  style: TextStyle(fontFamily: 'SF Pro Text', fontSize: 24),
                 ),
               ],
             ),
